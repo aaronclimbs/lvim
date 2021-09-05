@@ -15,6 +15,11 @@ lvim.keys.normal_mode["<esc><esc>"] = "<cmd>nohlsearch<cr>"
 lvim.keys.normal_mode["Y"] = "y$"
 lvim.keys.visual_mode["p"] = [["_dP]]
 
+-- for finding syntax ids for non TS enabled languages
+vim.cmd [[
+map <F3> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<' . synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">" . " FG:" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"fg#")<CR>
+]]
+
 -- LSP
 lvim.lsp.diagnostics.virtual_text = false
 lvim.lsp.override = { "java" }
@@ -25,6 +30,10 @@ lvim.builtin.dashboard.active = true
 lvim.builtin.terminal.active = true
 lvim.builtin.dap.active = true
 lvim.builtin.bufferline.active = true
+lvim.builtin.tabnine = { active = true } -- only use for solidity and other langs that I don't have a langserver for
+if lvim.builtin.tabnine.active then
+  lvim.builtin.compe.source.tabnine = { kind = " ", priority = 150, max_reslts = 6 }
+end
 
 -- Whichkey
 lvim.builtin.which_key.mappings.l.d = { "<cmd>TroubleToggle<cr>", "Diagnostics" }
@@ -58,18 +67,17 @@ end
 -- Additional Plugins
 lvim.plugins = {
   -- { "lunarvim/colorschemes" },
-  -- { "lunarvim/onedarker" },
-  { "folke/tokyonight.nvim" },
+  -- { "folke/tokyonight.nvim" },
   { "mfussenegger/nvim-jdtls" },
-  { "TovarishFin/vim-solidity" },
-  -- {
-  --   "abecodes/tabout.nvim",
-  --   config = function()
-  --     require("user.tabout").config()
-  --   end,
-  --   wants = { "nvim-treesitter" }, -- or require if not used so far
-  --   after = { "nvim-compe", "vim-vsnip" }, -- if a completion plugin is using tabs load it before
-  -- },
+  { "ChristianChiarulli/vim-solidity" },
+  {
+    "abecodes/tabout.nvim",
+    config = function()
+      require("user.tabout").config()
+    end,
+    wants = { "nvim-treesitter" }, -- or require if not used so far
+    after = { "nvim-compe", "vim-vsnip" }, -- if a completion plugin is using tabs load it before
+  },
   {
     "pwntester/octo.nvim",
     event = "BufRead",
@@ -77,13 +85,13 @@ lvim.plugins = {
       require("user.octo").config()
     end,
   },
-  {
-    "ray-x/lsp_signature.nvim",
-    event = "InsertEnter",
-    config = function()
-      require("user.lsp_signature").config()
-    end,
-  },
+  -- {
+  --   "ray-x/lsp_signature.nvim",
+  --   event = "InsertEnter",
+  --   config = function()
+  --     require("user.lsp_signature").config()
+  --   end,
+  -- },
   {
     "unblevable/quick-scope",
     config = function()
@@ -216,6 +224,13 @@ lvim.plugins = {
   --   -- cmd = "ZenMode",
   -- },
   {
+    "tzachar/compe-tabnine",
+    run = "./install.sh",
+    requires = "hrsh7th/nvim-compe",
+    event = "InsertEnter",
+    disable = not lvim.builtin.tabnine.active,
+  },
+  {
     "dccsillag/magma-nvim",
   },
   {
@@ -252,6 +267,7 @@ lvim.plugins = {
   },
 }
 
+vim.cmd [[ au CmdWinEnter * quit ]]
 -- TODO: q quits in spectr_panel ft
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)
 -- O.user_autocommands = {{ "BufWinEnter", "*", "echo \"hi again\""}}
