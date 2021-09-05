@@ -247,6 +247,9 @@ lvim.plugins = {
     "sindrets/diffview.nvim",
     event = "BufRead",
   },
+  {
+    "wakatime/vim-wakatime",
+  },
 }
 
 -- TODO: q quits in spectr_panel ft
