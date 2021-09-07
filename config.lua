@@ -5,6 +5,7 @@ lvim.transparent_window = false
 vim.opt.wrap = false
 lvim.debug = false
 
+
 -- vim.g.loaded_netrw = 1
 -- vim.g.loaded_netrwPlugin = 1
 
@@ -30,10 +31,10 @@ lvim.builtin.dashboard.active = true
 lvim.builtin.terminal.active = true
 lvim.builtin.dap.active = true
 lvim.builtin.bufferline.active = true
-lvim.builtin.tabnine = { active = true } -- only use for solidity and other langs that I don't have a langserver for
-if lvim.builtin.tabnine.active then
-  lvim.builtin.compe.source.tabnine = { kind = " ", priority = 150, max_reslts = 6 }
-end
+-- lvim.builtin.tabnine = { active = true } -- only use for solidity and other langs that I don't have a langserver for
+-- if lvim.builtin.tabnine.active then
+--   lvim.builtin.compe.source.tabnine = { kind = " ﮧ ", priority = 150, max_reslts = 6 }
+-- end
 
 -- Whichkey
 lvim.builtin.which_key.mappings.l.d = { "<cmd>TroubleToggle<cr>", "Diagnostics" }
@@ -41,6 +42,16 @@ lvim.builtin.which_key.mappings.l.R = { "<cmd>TroubleToggle lsp_references<cr>",
 lvim.builtin.which_key.mappings.l.o = { "<cmd>SymbolsOutline<cr>", "Outline" }
 lvim.builtin.which_key.mappings.T.h = { "<cmd>TSHighlightCapturesUnderCursor<cr>", "Highlight" }
 lvim.builtin.which_key.mappings.T.p = { "<cmd>TSPlaygroundToggle<cr>", "Playground" }
+
+lvim.builtin.which_key.mappings.g["G"] = {
+  name = "Gist",
+  a = { "<cmd>Gist -b -a<cr>", "Create Anon" },
+  d = { "<cmd>Gist -d<cr>", "Delete" },
+  f = { "<cmd>Gist -f<cr>", "Fork" },
+  g = { "<cmd>Gist -b<cr>", "Create" },
+  l = { "<cmd>Gist -l<cr>", "List" },
+  p = { "<cmd>Gist -b -p<cr>", "Create Private" },
+}
 lvim.builtin.which_key.mappings["z"] = { "<cmd>ZenMode<cr>", "Zen" }
 lvim.builtin.which_key.mappings["r"] = {
   name = "Replace",
@@ -70,14 +81,14 @@ lvim.plugins = {
   -- { "folke/tokyonight.nvim" },
   { "mfussenegger/nvim-jdtls" },
   { "ChristianChiarulli/vim-solidity" },
-  {
-    "abecodes/tabout.nvim",
-    config = function()
-      require("user.tabout").config()
-    end,
-    wants = { "nvim-treesitter" }, -- or require if not used so far
-    after = { "nvim-compe", "vim-vsnip" }, -- if a completion plugin is using tabs load it before
-  },
+  -- {
+  --   "abecodes/tabout.nvim",
+  --   config = function()
+  --     require("user.tabout").config()
+  --   end,
+  --   wants = { "nvim-treesitter" }, -- or require if not used so far
+  --   after = { "nvim-compe", "vim-vsnip" }, -- if a completion plugin is using tabs load it before
+  -- },
   {
     "pwntester/octo.nvim",
     event = "BufRead",
@@ -126,9 +137,19 @@ lvim.plugins = {
     end,
   },
   {
+    -- Note for this to work you need to create a pat and put it in `~/.gist-vim` as <token XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX>
+    -- You will also need to set github username like:
+    --
+    -- [user]
+    --	 email = chris.machine@pm.me
+    --   name = Christian Chiarulli
+    -- [github]
+    --   user = ChristianChiarulli
     "mattn/vim-gist",
-    event = "BufRead",
     requires = "mattn/webapi-vim",
+    config = function()
+      vim.g.gist_open_browser_after_post = 1
+    end,
   },
   {
     "tamago324/lir.nvim",
@@ -223,13 +244,29 @@ lvim.plugins = {
   --   end,
   --   -- cmd = "ZenMode",
   -- },
+  --
+
   {
-    "tzachar/compe-tabnine",
+    "tzachar/cmp-tabnine",
+    config = function()
+      local tabnine = require "cmp_tabnine.config"
+      tabnine:setup {
+        max_lines = 1000,
+        max_num_results = 20,
+        sort = true,
+      }
+    end,
+
     run = "./install.sh",
-    requires = "hrsh7th/nvim-compe",
-    event = "InsertEnter",
-    disable = not lvim.builtin.tabnine.active,
+    requires = "hrsh7th/nvim-cmp",
   },
+  -- {
+  --   "tzachar/compe-tabnine",
+  --   run = "./install.sh",
+  --   requires = "hrsh7th/nvim-compe",
+  --   event = "InsertEnter",
+  --   disable = not lvim.builtin.tabnine.active,
+  -- },
   {
     "dccsillag/magma-nvim",
   },
@@ -274,3 +311,13 @@ vim.cmd [[ au CmdWinEnter * quit ]]
 
 -- way to get os name
 -- print(vim.loop.os_uname().sysname)
+
+-- *Must* be *S*olidity not solidity
+require("nvim-treesitter.parsers").get_parser_configs().solidity = {
+  install_info = {
+    url = "https://github.com/JoranHonig/tree-sitter-solidity",
+    files = { "src/parser.c" },
+    requires_generate_from_grammar = true,
+  },
+  filetype = "solidity",
+}
