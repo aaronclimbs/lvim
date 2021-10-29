@@ -23,6 +23,35 @@ map <F3> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<
 -- LSP
 lvim.lsp.diagnostics.virtual_text = false
 lvim.lsp.override = { "java" }
+lvim.lang.scss.formatters = {
+  {
+    exe = "prettier", -- can be prettierd eslint, or eslint_d as well
+  },
+}
+
+lvim.lang.typescriptreact.formatters = {
+  {
+    exe = "prettier", -- can be prettierd eslint, or eslint_d as well
+  },
+}
+
+lvim.lang.java.formatters = {
+  {
+    exe = "prettier", -- can be prettierd eslint, or eslint_d as well
+  },
+}
+
+lvim.lang.typescript.formatters = {
+  {
+    exe = "prettier", -- can be prettierd eslint, or eslint_d as well
+  },
+}
+
+lvim.lang.javascriptreact.formatters = {
+  {
+    exe = "prettier", -- can be prettierd eslint, or eslint_d as well
+  },
+}
 -- require("user.json_schemas").setup()
 
 -- Builtins
@@ -55,7 +84,11 @@ lvim.builtin.which_key.mappings["r"] = {
   w = { "<cmd>lua require('spectre').open_visual({select_word=true})<cr>", "Replace Word" },
   f = { "<cmd>lua require('spectre').open_file_search()<cr>", "Replace Buffer" },
 }
--- lvim.builtin.which_key.mappings.f = { "<cmd>lua require('lir.float').toggle()<cr>", "Files" }
+
+lvim.builtin.which_key.mappings["u"] = { "<cmd>UndotreeToggle<cr>", "Undotree" }
+
+-- Nvim-tree
+lvim.builtin.nvimtree.hide_dotfiles = 0
 
 -- Treesitter
 lvim.builtin.treesitter.ensure_installed = "maintained"
@@ -66,10 +99,17 @@ lvim.builtin.treesitter.indent.disable = { "python" }
 -- Telescope
 lvim.builtin.telescope.on_config_done = function()
   local actions = require "telescope.actions"
-  lvim.builtin.telescope.defaults.mappings.i["<C-j>"] = actions.move_selection_next
-  lvim.builtin.telescope.defaults.mappings.i["<C-k>"] = actions.move_selection_previous
-  lvim.builtin.telescope.defaults.mappings.i["<C-n>"] = actions.cycle_history_next
-  lvim.builtin.telescope.defaults.mappings.i["<C-p>"] = actions.cycle_history_prev
+  lvim.builtin.telescope.defaults.mappings = {
+    i = {
+      ["<C-j>"] = actions.move_selection_next,
+      ["<C-k>"] = actions.move_selection_previous,
+      ["<C-n>"] = actions.cycle_history_next,
+      ["<C-p>"] = actions.cycle_history_prev,
+    },
+    n = {
+      ["<C-j>"] = actions.move_selection_next,
+    },
+  }
 end
 
 -- Additional Plugins
@@ -93,6 +133,15 @@ lvim.plugins = {
       require("user.octo").config()
     end,
   },
+
+  -- {
+  --   "ray-x/navigator.lua",
+  --   requires = { "ray-x/guihua.lua", run = "cd lua/fzy && make" },
+  --   config = function()
+  --     require("navigator").setup()
+  --   end,
+  -- },
+
   -- {
   --   "ray-x/lsp_signature.nvim",
   --   event = "InsertEnter",
@@ -207,6 +256,9 @@ lvim.plugins = {
       require("user.neoscroll").config()
     end,
   },
+  {
+    "mbbill/undotree",
+  },
   -- {
   --   "vuki656/package-info.nvim",
   --   config = function()
@@ -214,13 +266,13 @@ lvim.plugins = {
   --   end,
   --   ft = "json",
   -- },
-  {
-    "rcarriga/nvim-notify",
-    event = "BufRead",
-    config = function()
-      require("user.notify").config()
-    end,
-  },
+  -- {
+  --   "rcarriga/nvim-notify",
+  --   event = "BufRead",
+  --   config = function()
+  --     require("user.notify").config()
+  --   end,
+  -- },
   {
     "simrat39/symbols-outline.nvim",
     -- cmd = "SymbolsOutline",
@@ -241,7 +293,13 @@ lvim.plugins = {
   --   end,
   --   -- cmd = "ZenMode",
   -- },
-  --
+  {
+    "tpope/vim-surround",
+    keys = { "c", "d", "y" },
+  },
+  {
+    "tpope/vim-repeat",
+  },
 
   {
     "tzachar/cmp-tabnine",
