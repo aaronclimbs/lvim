@@ -4,6 +4,8 @@ lvim.format_on_save = false
 lvim.transparent_window = false
 vim.opt.wrap = false
 lvim.debug = false
+vim.o.relativenumber = true
+lvim.builtin.notify.active = true
 
 -- vim.g.loaded_netrw = 1
 -- vim.g.loaded_netrwPlugin = 1
@@ -18,6 +20,12 @@ lvim.keys.visual_mode["p"] = [["_dP]]
 -- for finding syntax ids for non TS enabled languages
 vim.cmd [[
 map <F3> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<' . synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">" . " FG:" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"fg#")<CR>
+]]
+
+-- for neovide
+vim.o.guifont="MesloLGM Nerd Font"
+vim.cmd [[
+let g:neovide_cursor_vfx_mode = "railgun"
 ]]
 
 -- LSP
@@ -183,21 +191,6 @@ lvim.plugins = {
     end,
   },
   {
-    -- Note for this to work you need to create a pat and put it in `~/.gist-vim` as <token XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX>
-    -- You will also need to set github username like:
-    --
-    -- [user]
-    --	 email = chris.machine@pm.me
-    --   name = Christian Chiarulli
-    -- [github]
-    --   user = ChristianChiarulli
-    "mattn/vim-gist",
-    requires = "mattn/webapi-vim",
-    config = function()
-      vim.g.gist_open_browser_after_post = 1
-    end,
-  },
-  {
     "tamago324/lir.nvim",
     config = function()
       require "user.lir"
@@ -230,13 +223,6 @@ lvim.plugins = {
       require("user.colorizer").config()
     end,
   },
-  -- {
-  --   "nvim-telescope/telescope-project.nvim",
-  --   event = "BufWinEnter",
-  --   setup = function()
-  --     vim.cmd [[packadd telescope.nvim]]
-  --   end,
-  -- },
   {
     "windwp/nvim-spectre",
     event = "BufRead",
@@ -260,13 +246,6 @@ lvim.plugins = {
     "mbbill/undotree",
   },
   -- {
-  --   "vuki656/package-info.nvim",
-  --   config = function()
-  --     require "user.package-info"
-  --   end,
-  --   ft = "json",
-  -- },
-  -- {
   --   "rcarriga/nvim-notify",
   --   event = "BufRead",
   --   config = function()
@@ -286,13 +265,13 @@ lvim.plugins = {
   --     vim.cmd("source $HOME/.config/lvim/lua/user/wilder.vim")
   --   end
   -- },
-  -- {
-  --   "folke/twilight.nvim",
-  --   config = function()
-  --     require("user.twilight").config()
-  --   end,
-  --   -- cmd = "ZenMode",
-  -- },
+  {
+    "folke/twilight.nvim",
+    config = function()
+      require("user.twilight").config()
+    end,
+    cmd = "ZenMode",
+  },
   {
     "tpope/vim-surround",
     keys = { "c", "d", "y" },
@@ -300,20 +279,22 @@ lvim.plugins = {
   {
     "tpope/vim-repeat",
   },
+  -- {
+  --   "tzachar/cmp-tabnine",
+  --   config = function()
+  --     local tabnine = require "cmp_tabnine.config"
+  --     tabnine:setup {
+  --       max_lines = 1000,
+  --       max_num_results = 20,
+  --       sort = true,
+  --     }
+  --   end,
 
+  --   run = "./install.sh",
+  --   requires = "hrsh7th/nvim-cmp",
+  -- },
   {
-    "tzachar/cmp-tabnine",
-    config = function()
-      local tabnine = require "cmp_tabnine.config"
-      tabnine:setup {
-        max_lines = 1000,
-        max_num_results = 20,
-        sort = true,
-      }
-    end,
-
-    run = "./install.sh",
-    requires = "hrsh7th/nvim-cmp",
+    "github/copilot.vim"
   },
   -- {
   --   "tzachar/compe-tabnine",
