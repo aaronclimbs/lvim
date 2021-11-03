@@ -1,53 +1,37 @@
 -- general
-lvim.colorscheme = "onedarker"
+lvim.colorscheme = "tokyonight"
+vim.g.tokyonight_style = "night"
+
 lvim.format_on_save = false
 lvim.transparent_window = false
+
 vim.opt.wrap = false
 lvim.debug = false
-vim.o.relativenumber = true
-lvim.builtin.notify.active = true
 
--- vim.g.loaded_netrw = 1
--- vim.g.loaded_netrwPlugin = 1
+vim.o.relativenumber = true
 
 -- keymappings
 lvim.leader = "space"
 
-lvim.keys.normal_mode["<esc><esc>"] = "<cmd>nohlsearch<cr>"
--- lvim.keys.normal_mode["Y"] = "y$"
+vim.g.surround_load_keymaps = true
+lvim.builtin.notify.active = true
+
+lvim.keys.normal_mode["Y"] = "y$"
 lvim.keys.visual_mode["p"] = [["_dP]]
 
 -- for finding syntax ids for non TS enabled languages
 vim.cmd [[
-map <F3> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<' . synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">" . " FG:" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"fg#")<CR>
+  map <F3> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<' . synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">" . " FG:" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"fg#")<CR>
 ]]
 
 -- for neovide
-vim.o.guifont="MesloLGM Nerd Font"
+vim.o.guifont = "MesloLGM Nerd Font"
 vim.cmd [[
-let g:neovide_cursor_vfx_mode = "railgun"
+  let g:neovide_cursor_vfx_mode = "railgun"
 ]]
 
 -- LSP
 lvim.lsp.diagnostics.virtual_text = false
-lvim.lsp.override = { "java" }
-lvim.lang.scss.formatters = {
-  {
-    exe = "prettier", -- can be prettierd eslint, or eslint_d as well
-  },
-}
-
-lvim.lang.typescriptreact.formatters = {
-  {
-    exe = "prettier", -- can be prettierd eslint, or eslint_d as well
-  },
-}
-
-lvim.lang.java.formatters = {
-  {
-    exe = "prettier", -- can be prettierd eslint, or eslint_d as well
-  },
-}
 
 lvim.lang.typescript.formatters = {
   {
@@ -55,11 +39,12 @@ lvim.lang.typescript.formatters = {
   },
 }
 
-lvim.lang.javascriptreact.formatters = {
-  {
-    exe = "prettier", -- can be prettierd eslint, or eslint_d as well
-  },
-}
+lvim.lang.scss.formatters = lvim.lang.typescript.formatters
+lvim.lang.json.formatters = lvim.lang.typescript.formatters
+lvim.lang.typescriptreact.formatters = lvim.lang.typescript.formatters
+lvim.lang.javascriptreact.formatters = lvim.lang.typescript.formatters
+lvim.lang.javascript.formatters = lvim.lang.typescript.formatters
+
 -- require("user.json_schemas").setup()
 
 -- Builtins
@@ -67,7 +52,6 @@ lvim.builtin.dashboard.active = true
 lvim.builtin.terminal.active = true
 lvim.builtin.dap.active = true
 lvim.builtin.bufferline.active = true
--- lvim.builtin.cmp.sources = {}
 
 -- Whichkey
 lvim.builtin.which_key.mappings.l.d = { "<cmd>TroubleToggle<cr>", "Diagnostics" }
@@ -94,6 +78,14 @@ lvim.builtin.which_key.mappings["r"] = {
 }
 
 lvim.builtin.which_key.mappings["u"] = { "<cmd>UndotreeToggle<cr>", "Undotree" }
+lvim.builtin.which_key.mappings.s.g = {
+  name = "Git",
+  s = { "<cmd>Telescope git_status<cr>", "Git status" },
+  B = { "<cmd>Telescope git_branches<cr>", "Git branches" },
+  c = { "<cmd>Telescope git_commits<cr>", "Git commits" },
+  b = { "<cmd>Telescope git_bcommits<cr>", "Git bcommits" },
+  t = { "<cmd>Telescope git_stash<cr>", "Git stash" },
+}
 
 -- Nvim-tree
 lvim.builtin.nvimtree.hide_dotfiles = 0
@@ -109,23 +101,39 @@ lvim.builtin.telescope.on_config_done = function()
   local actions = require "telescope.actions"
   lvim.builtin.telescope.defaults.mappings = {
     i = {
-      ["<C-j>"] = actions.move_selection_next,
-      ["<C-k>"] = actions.move_selection_previous,
-      ["<C-n>"] = actions.cycle_history_next,
-      ["<C-p>"] = actions.cycle_history_prev,
+      ["<C-n>"] = actions.move_selection_next,
+      ["<C-p>"] = actions.move_selection_previous,
+      ["<C-j>"] = actions.cycle_history_next,
+      ["<C-k>"] = actions.cycle_history_prev,
     },
     n = {
-      ["<C-j>"] = actions.move_selection_next,
+      ["<C-n>"] = actions.move_selection_next,
+      ["<C-p>"] = actions.move_selection_previous,
     },
   }
+  lvim.builtin.telescope.defaults.file_ignore_patterns = { "NvimTree", "node_modules" }
 end
+
+lvim.builtin.cmp.sources = {
+  { name = "nvim_lsp" },
+  { name = "path" },
+  -- { name = "luasnip" },
+  { name = "cmp_tabnine" },
+  { name = "nvim_lua" },
+  -- { name = "buffer" },
+  -- { name = "calc" },
+  { name = "emoji" },
+  { name = "treesitter" },
+  -- { name = "crates" },
+}
 
 -- Additional Plugins
 lvim.plugins = {
   -- { "lunarvim/colorschemes" },
-  -- { "folke/tokyonight.nvim" },
+  { "folke/tokyonight.nvim" },
   { "mfussenegger/nvim-jdtls" },
   { "ChristianChiarulli/vim-solidity" },
+  { "mattn/emmet-vim" },
   -- {
   --   "abecodes/tabout.nvim",
   --   config = function()
@@ -245,13 +253,6 @@ lvim.plugins = {
   {
     "mbbill/undotree",
   },
-  -- {
-  --   "rcarriga/nvim-notify",
-  --   event = "BufRead",
-  --   config = function()
-  --     require("user.notify").config()
-  --   end,
-  -- },
   {
     "simrat39/symbols-outline.nvim",
     -- cmd = "SymbolsOutline",
@@ -273,36 +274,37 @@ lvim.plugins = {
     cmd = "ZenMode",
   },
   {
-    "tpope/vim-surround",
-    keys = { "c", "d", "y" },
+    "blackCauldron7/surround.nvim",
+    config = function()
+      require("surround").setup {
+        context_offset = 100,
+        load_autogroups = false,
+        mappings_style = "sandwich",
+        map_insert_mode = true,
+        quotes = { "'", '"', "`" },
+        brackets = { "(", "{", "[" },
+        pairs = {
+          nestable = { { "(", ")" }, { "[", "]" }, { "{", "}" } },
+          linear = { { "'", "'" }, { "`", "`" }, { '"', '"' } },
+        },
+        prefix = "s",
+      }
+    end,
   },
   {
-    "tpope/vim-repeat",
-  },
-  -- {
-  --   "tzachar/cmp-tabnine",
-  --   config = function()
-  --     local tabnine = require "cmp_tabnine.config"
-  --     tabnine:setup {
-  --       max_lines = 1000,
-  --       max_num_results = 20,
-  --       sort = true,
-  --     }
-  --   end,
+    "tzachar/cmp-tabnine",
+    config = function()
+      local tabnine = require "cmp_tabnine.config"
+      tabnine:setup {
+        max_lines = 1000,
+        max_num_results = 20,
+        sort = true,
+      }
+    end,
 
-  --   run = "./install.sh",
-  --   requires = "hrsh7th/nvim-cmp",
-  -- },
-  {
-    "github/copilot.vim"
+    run = "./install.sh",
+    requires = "hrsh7th/nvim-cmp",
   },
-  -- {
-  --   "tzachar/compe-tabnine",
-  --   run = "./install.sh",
-  --   requires = "hrsh7th/nvim-compe",
-  --   event = "InsertEnter",
-  --   disable = not lvim.builtin.tabnine.active,
-  -- },
   {
     "dccsillag/magma-nvim",
   },
@@ -338,6 +340,15 @@ lvim.plugins = {
   {
     "wakatime/vim-wakatime",
   },
+  {
+    "rmagatti/auto-session",
+    config = function()
+      require("auto-session").setup {
+        log_level = "info",
+        auto_session_suppress_dirs = { "~/", "~/projects" },
+      }
+    end,
+  }
 }
 
 vim.cmd [[ au CmdWinEnter * quit ]]
