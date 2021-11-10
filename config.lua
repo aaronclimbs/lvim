@@ -19,6 +19,80 @@ lvim.builtin.notify.active = true
 lvim.keys.normal_mode["Y"] = "y$"
 lvim.keys.visual_mode["p"] = [["_dP]]
 
+local swap_next, swap_prev = (function()
+  local swap_objects = {
+    p = "@parameter.inner",
+    f = "@function.outer",
+    e = "@element",
+
+    -- Not ready, but I think it's my fault :)
+    -- v = "@variable",
+  }
+
+  local n, p = {}, {}
+  for key, obj in pairs(swap_objects) do
+    n[string.format("<C-Space><C-%s>", key)] = obj
+    p[string.format("<C-BS><C-%s>", key)] = obj
+  end
+
+  return n, p
+end)()
+
+lvim.builtin.treesitter.textobjects = {
+  move = {
+    enable = true,
+    set_jumps = true,
+
+    goto_next_start = {
+      ["]m"] = "@function.outer",
+      ["]]"] = "@class.outer",
+    },
+    goto_next_end = {
+      ["]M"] = "@function.outer",
+      ["]["] = "@class.outer",
+    },
+    goto_previous_start = {
+      ["[m"] = "@function.outer",
+      ["[["] = "@class.outer",
+    },
+    goto_previous_end = {
+      ["[M"] = "@function.outer",
+      ["[]"] = "@class.outer",
+    },
+  },
+
+  swap = {
+    enable = true,
+    swap_next = swap_next,
+    swap_previous = swap_prev,
+  },
+
+  select = {
+    enable = true,
+
+    -- Automatically jump forward to textobj, similar to targets.vim
+    lookahead = true,
+
+    keymaps = {
+      -- You can use the capture groups defined in textobjects.scm
+      ["af"] = "@function.outer",
+      ["if"] = "@function.inner",
+      ["ac"] = "@class.outer",
+      ["ic"] = "@class.inner",
+    },
+  },
+
+  incremental_selection = {
+    enable = true,
+    keymaps = {
+      init_selection = "<leader>v",
+      node_incremental = "+",
+      scope_incremental = "o",
+      node_decremental = "-",
+    },
+  },
+}
+
 -- for finding syntax ids for non TS enabled languages
 vim.cmd [[
   map <F3> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<' . synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">" . " FG:" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"fg#")<CR>
@@ -31,19 +105,38 @@ vim.cmd [[
 ]]
 
 -- LSP
-lvim.lsp.diagnostics.virtual_text = false
+local formatters = require "lvim.lsp.null-ls.formatters"
 
-lvim.lang.typescript.formatters = {
+formatters.setup {
   {
-    exe = "prettier", -- can be prettierd eslint, or eslint_d as well
+    exe = "prettier",
+    ---@usage specify which filetypes to enable. By default a providers will attach to all filetypes it supports
+    filetype = { "typescript", "typescriptreact", "javascript", "javascriptreact", "json", "solidity" },
   },
+  {
+    exe = "stylua",
+    filetype = { "lua" },
+  },
+  -- {
+  --   exe = "black",
+  --   filetype = { "python" },
+  -- },
 }
 
-lvim.lang.scss.formatters = lvim.lang.typescript.formatters
-lvim.lang.json.formatters = lvim.lang.typescript.formatters
-lvim.lang.typescriptreact.formatters = lvim.lang.typescript.formatters
-lvim.lang.javascriptreact.formatters = lvim.lang.typescript.formatters
-lvim.lang.javascript.formatters = lvim.lang.typescript.formatters
+-- local linters = require "lvim.lsp.null-ls.linters"
+--
+-- linters.setup {
+--   {
+--     exe = "eslint_d",
+--     ---@usage specify which filetypes to enable. By default a providers will attach to all filetypes it supports
+--     filetypes = {"javascript", "javascriptreact"}
+--     },
+--   {
+--     exe = "flake8",
+--     ---@usage specify which filetypes to enable. By default a providers will attach to all filetypes it supports
+--     filetypes = {"python"}
+--     },
+-- }
 
 -- require("user.json_schemas").setup()
 
@@ -118,7 +211,7 @@ lvim.builtin.cmp.sources = {
   { name = "nvim_lsp" },
   { name = "path" },
   -- { name = "luasnip" },
-  { name = "cmp_tabnine" },
+  -- { name = "cmp_tabnine" },
   { name = "nvim_lua" },
   -- { name = "buffer" },
   -- { name = "calc" },
@@ -285,26 +378,26 @@ lvim.plugins = {
         brackets = { "(", "{", "[" },
         pairs = {
           nestable = { { "(", ")" }, { "[", "]" }, { "{", "}" } },
-          linear = { { "'", "'" }, { "`", "`" }, { '"', '"' } },
+          linear = { { "'", "'" }, { '"', '"' }, { "`", "`" } },
         },
         prefix = "s",
       }
     end,
   },
-  {
-    "tzachar/cmp-tabnine",
-    config = function()
-      local tabnine = require "cmp_tabnine.config"
-      tabnine:setup {
-        max_lines = 1000,
-        max_num_results = 20,
-        sort = true,
-      }
-    end,
+  -- {
+  --   "tzachar/cmp-tabnine",
+  --   config = function()
+  --     local tabnine = require "cmp_tabnine.config"
+  --     tabnine:setup {
+  --       max_lines = 1000,
+  --       max_num_results = 20,
+  --       sort = true,
+  --     }
+  --   end,
 
-    run = "./install.sh",
-    requires = "hrsh7th/nvim-cmp",
-  },
+  --   run = "./install.sh",
+  --   requires = "hrsh7th/nvim-cmp",
+  -- },
   {
     "dccsillag/magma-nvim",
   },
@@ -348,7 +441,16 @@ lvim.plugins = {
         auto_session_suppress_dirs = { "~/", "~/projects" },
       }
     end,
-  }
+  },
+  -- Custom semantic text objects
+  {
+    "nvim-treesitter/nvim-treesitter-textobjects",
+  },
+  -- Text objects using hint labels
+  {
+    "mfussenegger/nvim-ts-hint-textobject",
+    event = "BufRead",
+  },
 }
 
 vim.cmd [[ au CmdWinEnter * quit ]]

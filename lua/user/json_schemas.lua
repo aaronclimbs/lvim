@@ -50,20 +50,20 @@ M.setup = function()
     },
   }
 
-  local function extend(tab1, tab2)
-    for _, value in ipairs(tab2) do
-      table.insert(tab1, value)
-    end
-    return tab1
-  end
+  -- local function extend(tab1, tab2)
+  --   for _, value in ipairs(tab2) do
+  --     table.insert(tab1, value)
+  --   end
+  --   return tab1
+  -- end
 
-  local extended_schemas = extend(schemas, require("nlspsettings.jsonls").get_default_schemas())
+  -- local extended_schemas = extend(schemas, require("nlspsettings.jsonls").get_default_schemas())
 
-  lvim.lang.json.lsp.setup.settings = {
-    json = {
-      schemas = extended_schemas,
-    },
-  }
+  -- lvim.lang.json.lsp.setup.settings = {
+  --   json = {
+  --     schemas = extended_schemas,
+  --   },
+  -- }
 end
 
 return M
