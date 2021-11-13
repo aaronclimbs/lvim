@@ -104,16 +104,8 @@ lvim.builtin.which_key.mappings.l.o = { "<cmd>SymbolsOutline<cr>", "Outline" }
 lvim.builtin.which_key.mappings.T.h = { "<cmd>TSHighlightCapturesUnderCursor<cr>", "Highlight" }
 lvim.builtin.which_key.mappings.T.p = { "<cmd>TSPlaygroundToggle<cr>", "Playground" }
 
-lvim.builtin.which_key.mappings.g["G"] = {
-  name = "Gist",
-  a = { "<cmd>Gist -b -a<cr>", "Create Anon" },
-  d = { "<cmd>Gist -d<cr>", "Delete" },
-  f = { "<cmd>Gist -f<cr>", "Fork" },
-  g = { "<cmd>Gist -b<cr>", "Create" },
-  l = { "<cmd>Gist -l<cr>", "List" },
-  p = { "<cmd>Gist -b -p<cr>", "Create Private" },
-}
 lvim.builtin.which_key.mappings["z"] = { "<cmd>ZenMode<cr>", "Zen" }
+
 lvim.builtin.which_key.mappings["r"] = {
   name = "Replace",
   r = { "<cmd>lua require('spectre').open()<cr>", "Replace" },
@@ -305,12 +297,14 @@ lvim.plugins = {
       require("user.outline").config()
     end,
   },
+
   -- TODO: maybe oneday
   -- { "gelguy/wilder.nvim",
   --   config = function ()
   --     vim.cmd("source $HOME/.config/lvim/lua/user/wilder.vim")
   --   end
   -- },
+
   {
     "folke/twilight.nvim",
     config = function()
