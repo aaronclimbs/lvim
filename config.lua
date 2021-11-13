@@ -10,6 +10,8 @@ lvim.debug = false
 
 vim.o.relativenumber = true
 
+vim.o.pumheight = 25
+
 -- keymappings
 lvim.leader = "space"
 
@@ -18,25 +20,9 @@ lvim.builtin.notify.active = true
 
 lvim.keys.normal_mode["Y"] = "y$"
 lvim.keys.visual_mode["p"] = [["_dP]]
+lvim.keys.normal_mode["<esc>"] = [[:nohl<cr>]]
 
-local swap_next, swap_prev = (function()
-  local swap_objects = {
-    p = "@parameter.inner",
-    f = "@function.outer",
-    e = "@element",
-
-    -- Not ready, but I think it's my fault :)
-    -- v = "@variable",
-  }
-
-  local n, p = {}, {}
-  for key, obj in pairs(swap_objects) do
-    n[string.format("<C-Space><C-%s>", key)] = obj
-    p[string.format("<C-BS><C-%s>", key)] = obj
-  end
-
-  return n, p
-end)()
+lvim.builtin.treesitter.textsubjects.enable = true
 
 lvim.builtin.treesitter.textobjects = {
   move = {
@@ -61,12 +47,6 @@ lvim.builtin.treesitter.textobjects = {
     },
   },
 
-  swap = {
-    enable = true,
-    swap_next = swap_next,
-    swap_previous = swap_prev,
-  },
-
   select = {
     enable = true,
 
@@ -79,16 +59,6 @@ lvim.builtin.treesitter.textobjects = {
       ["if"] = "@function.inner",
       ["ac"] = "@class.outer",
       ["ic"] = "@class.inner",
-    },
-  },
-
-  incremental_selection = {
-    enable = true,
-    keymaps = {
-      init_selection = "<leader>v",
-      node_incremental = "+",
-      scope_incremental = "o",
-      node_decremental = "-",
     },
   },
 }
@@ -117,26 +87,7 @@ formatters.setup {
     exe = "stylua",
     filetype = { "lua" },
   },
-  -- {
-  --   exe = "black",
-  --   filetype = { "python" },
-  -- },
 }
-
--- local linters = require "lvim.lsp.null-ls.linters"
---
--- linters.setup {
---   {
---     exe = "eslint_d",
---     ---@usage specify which filetypes to enable. By default a providers will attach to all filetypes it supports
---     filetypes = {"javascript", "javascriptreact"}
---     },
---   {
---     exe = "flake8",
---     ---@usage specify which filetypes to enable. By default a providers will attach to all filetypes it supports
---     filetypes = {"python"}
---     },
--- }
 
 -- require("user.json_schemas").setup()
 
@@ -171,6 +122,10 @@ lvim.builtin.which_key.mappings["r"] = {
 }
 
 lvim.builtin.which_key.mappings["u"] = { "<cmd>UndotreeToggle<cr>", "Undotree" }
+
+lvim.builtin.which_key.mappings.s.C = { "<cmd>Telescope colorscheme<cr>", "Colors"}
+lvim.builtin.which_key.mappings.s.c = { "<cmd>Telescope commands<cr>", "Commands"}
+
 lvim.builtin.which_key.mappings.s.g = {
   name = "Git",
   s = { "<cmd>Telescope git_status<cr>", "Git status" },
@@ -210,15 +165,12 @@ end
 lvim.builtin.cmp.sources = {
   { name = "nvim_lsp" },
   { name = "path" },
-  -- { name = "luasnip" },
-  -- { name = "cmp_tabnine" },
   { name = "nvim_lua" },
-  -- { name = "buffer" },
-  -- { name = "calc" },
   { name = "emoji" },
   { name = "treesitter" },
-  -- { name = "crates" },
 }
+
+table.insert(lvim.builtin.cmp.sources, { name = "cmp_git" })
 
 -- Additional Plugins
 lvim.plugins = {
@@ -251,13 +203,13 @@ lvim.plugins = {
   --   end,
   -- },
 
-  -- {
-  --   "ray-x/lsp_signature.nvim",
-  --   event = "InsertEnter",
-  --   config = function()
-  --     require("user.lsp_signature").config()
-  --   end,
-  -- },
+  {
+    "ray-x/lsp_signature.nvim",
+    event = "InsertEnter",
+    config = function()
+      require("user.lsp_signature").config()
+    end,
+  },
   {
     "unblevable/quick-scope",
     config = function()
@@ -446,10 +398,22 @@ lvim.plugins = {
   {
     "nvim-treesitter/nvim-treesitter-textobjects",
   },
+  -- Custom semantic text subjects
+  {
+    "RRethy/nvim-treesitter-textsubjects",
+  },
   -- Text objects using hint labels
   {
     "mfussenegger/nvim-ts-hint-textobject",
+    after = { "nvim-treesitter" },
     event = "BufRead",
+  },
+  {
+    "petertriho/cmp-git",
+    requires = "nvim-lua/plenary.nvim",
+    config = function()
+      require("cmp_git").setup()
+    end,
   },
 }
 
