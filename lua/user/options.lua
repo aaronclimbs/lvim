@@ -9,10 +9,12 @@ lvim.builtin.nvimtree.setup.view.side = "left"
 lvim.builtin.nvimtree.setup.renderer.icons.show.git = false
 lvim.builtin.breadcrumbs.active = true
 lvim.builtin.treesitter.highlight.enabled = true
+lvim.builtin.terminal.active = true
 lvim.builtin.dap.active = true
 lvim.builtin.cmp.cmdline.enable = false
 vim.opt.showtabline = 0
-
+lvim.colorscheme = "tokyonight"
+lvim.builtin.nvimtree.setup.view.width = 50
 
 local options = {
   backup = false,                          -- creates a backup file
@@ -67,6 +69,13 @@ vim.opt.fillchars:append {
   stl = ' ',
 }
 
+vim.g.surround_load_keymaps = true
+vim.g.surround_mappings_style = "surround"
+
+vim.o.sessionoptions="blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal"
+
+vim.opt.spelloptions:append "camel"
+
 vim.opt.shortmess:append "c"
 
 for k, v in pairs(options) do
@@ -82,3 +91,5 @@ vim.filetype.add {
     conf = "dosini",
   },
 }
+
+lvim.builtin.project.patterns = { ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile", "pom.xml" }

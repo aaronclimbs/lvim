@@ -1,62 +1,89 @@
 lvim.builtin.telescope.defaults.file_ignore_patterns = {
-	".git/",
-	"target/",
-	"docs/",
-	"vendor/*",
-	"%.lock",
-	"__pycache__/*",
-	"%.sqlite3",
-	"%.ipynb",
-	"node_modules/*",
-	-- "%.jpg",
-	-- "%.jpeg",
-	-- "%.png",
-	"%.svg",
-	"%.otf",
-	"%.ttf",
-	"%.webp",
-	".dart_tool/",
-	".github/",
-	".gradle/",
-	".idea/",
-	".settings/",
-	".vscode/",
-	"__pycache__/",
-	"build/",
-	"env/",
-	"gradle/",
-	"node_modules/",
-	"%.pdb",
-	"%.dll",
-	"%.class",
-	"%.exe",
-	"%.cache",
-	"%.ico",
-	"%.pdf",
-	"%.dylib",
-	"%.jar",
-	"%.docx",
-	"%.met",
-	"smalljre_*/*",
-	".vale/",
-	"%.burp",
-	"%.mp4",
-	"%.mkv",
-	"%.rar",
-	"%.zip",
-	"%.7z",
-	"%.tar",
-	"%.bz2",
-	"%.epub",
-	"%.flac",
-	"%.tar.gz",
+  ".git/",
+  "target/",
+  "docs/",
+  "vendor/*",
+  "%.lock",
+  "__pycache__/*",
+  "%.sqlite3",
+  "%.ipynb",
+  "node_modules/*",
+  "%.jpg",
+  "%.jpeg",
+  "%.png",
+  "%.svg",
+  "%.otf",
+  "%.ttf",
+  "%.webp",
+  ".dart_tool/",
+  ".github/",
+  ".gradle/",
+  ".idea/",
+  ".settings/",
+  ".vscode/",
+  "__pycache__/",
+  "build/",
+  "env/",
+  "gradle/",
+  "node_modules/",
+  "%.pdb",
+  "%.dll",
+  "%.class",
+  "%.exe",
+  "%.cache",
+  "%.ico",
+  "%.pdf",
+  "%.dylib",
+  "%.jar",
+  "%.docx",
+  "%.met",
+  "smalljre_*/*",
+  ".vale/",
+  "%.burp",
+  "%.mp4",
+  "%.mkv",
+  "%.rar",
+  "%.zip",
+  "%.7z",
+  "%.tar",
+  "%.bz2",
+  "%.epub",
+  "%.flac",
+  "%.tar.gz",
 }
+
+lvim.builtin.telescope.defaults.layout_config = {
+  width = 0.75,
+  preview_cutoff = 120,
+  horizontal = {
+    preview_width = function(_, cols, _)
+      if cols < 120 then
+        return math.floor(cols * 0.5)
+      end
+      return math.floor(cols * 0.6)
+    end,
+    mirror = false,
+  },
+  vertical = { mirror = false },
+}
+
+lvim.builtin.telescope.pickers.find_files = {
+  theme = "dropdown",
+  hidden = true,
+}
+
+lvim.builtin.telescope.defaults.color_devicons = true
+lvim.builtin.telescope.defaults.use_less = true
+lvim.builtin.telescope.defaults.set_env = { ["COLORTERM"] = "truecolor" }
+lvim.builtin.telescope.defaults.path_display = { "truncate" }
+
 local _, actions = pcall(require, "telescope.actions")
 lvim.builtin.telescope.defaults.mappings = {
-	-- for input mode
-	i = {
-		["<C-n>"] = actions.cycle_history_next,
-		["<C-p>"] = actions.cycle_history_prev,
+  -- for input mode
+  i = {
+
+    ["<C-n>"] = actions.move_selection_next,
+    ["<C-p>"] = actions.move_selection_previous,
 
 		["<C-j>"] = actions.move_selection_next,
 		["<C-k>"] = actions.move_selection_previous,
@@ -76,35 +103,28 @@ lvim.builtin.telescope.defaults.mappings = {
 
 		["<c-d>"] = require("telescope.actions").delete_buffer,
 
-		-- ["<C-u>"] = actions.preview_scrolling_up,
-		-- ["<C-d>"] = actions.preview_scrolling_down,
+    ["<PageUp>"] = actions.results_scrolling_up,
+    ["<PageDown>"] = actions.results_scrolling_down,
 
-		-- ["<Tab>"] = actions.toggle_selection + actions.move_selection_worse,
-		["<Tab>"] = actions.close,
-		["<S-Tab>"] = actions.close,
-		-- ["<S-Tab>"] = actions.toggle_selection + actions.move_selection_better,
-		["<C-q>"] = actions.send_to_qflist + actions.open_qflist,
-		["<M-q>"] = actions.send_selected_to_qflist + actions.open_qflist,
-		["<C-l>"] = actions.complete_tag,
-		["<C-h>"] = actions.which_key, -- keys from pressing <C-h>
-		["<esc>"] = actions.close,
-	},
-	-- for normal mode
-	n = {
-		["<esc>"] = actions.close,
-		["<CR>"] = actions.select_default,
-		["<C-x>"] = actions.select_horizontal,
-		["<C-v>"] = actions.select_vertical,
-		["<C-t>"] = actions.select_tab,
-		["<C-b>"] = actions.results_scrolling_up,
-		["<C-f>"] = actions.results_scrolling_down,
+    ["<Tab>"] = actions.toggle_selection + actions.move_selection_worse,
+    ["<S-Tab>"] = actions.toggle_selection + actions.move_selection_better,
+    ["<C-q>"] = actions.send_to_qflist + actions.open_qflist,
+    ["<C-h>"] = actions.which_key, -- keys from pressing <C-h>
+    ["<C-l>"] = actions.complete_tag,
+    ["<C-_>"] = actions.which_key, -- keys from pressing <C-/>
+  },
+  -- for normal mode
+  n = {
+    ["<esc>"] = actions.close,
+    ["<CR>"] = actions.select_default,
+    ["<C-x>"] = actions.select_horizontal,
+    ["<C-v>"] = actions.select_vertical,
+    ["<C-t>"] = actions.select_tab,
 
-		["<Tab>"] = actions.close,
-		["<S-Tab>"] = actions.close,
-		-- ["<Tab>"] = actions.toggle_selection + actions.move_selection_worse,
-		-- ["<S-Tab>"] = actions.toggle_selection + actions.move_selection_better,
-		["<C-q>"] = actions.send_to_qflist + actions.open_qflist,
-		["<M-q>"] = actions.send_selected_to_qflist + actions.open_qflist,
+    ["<Tab>"] = actions.toggle_selection + actions.move_selection_worse,
+    ["<S-Tab>"] = actions.toggle_selection + actions.move_selection_better,
+    ["<C-q>"] = actions.send_to_qflist + actions.open_qflist,
+    ["<M-q>"] = actions.send_selected_to_qflist + actions.open_qflist,
 
 		["j"] = actions.move_selection_next,
 		["k"] = actions.move_selection_previous,

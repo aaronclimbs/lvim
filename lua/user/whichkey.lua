@@ -1,3 +1,4 @@
+lvim.builtin.which_key.mappings["a"] = { "<cmd>Alpha<cr>", "Alpha" }
 lvim.builtin.which_key.mappings["b"] = { "<cmd>Telescope buffers<cr>", "Buffers" }
 lvim.builtin.which_key.mappings["v"] = { "<cmd>vsplit<cr>", "vsplit" }
 lvim.builtin.which_key.mappings["h"] = { "<cmd>nohlsearch<cr>", "nohl" }
@@ -5,6 +6,8 @@ lvim.builtin.which_key.mappings["q"] = { '<cmd>lua require("user.functions").sma
 lvim.builtin.which_key.mappings["/"] = { '<cmd>lua require("Comment.api").toggle.linewise.current()<CR>', "Comment" }
 lvim.builtin.which_key.mappings["c"] = { "<cmd>Bdelete!<CR>", "Close Buffer" }
 lvim.builtin.which_key.mappings["gy"] = "Link"
+lvim.builtin.which_key.mappings["O"] = { "<cmd>SymbolsOutline<cr>", "Outline" }
+
 lvim.builtin.which_key.mappings["r"] = {
 	name = "Replace",
 	r = { "<cmd>lua require('spectre').open()<cr>", "Replace" },
@@ -23,16 +26,16 @@ lvim.builtin.which_key.mappings["d"] = {
 	u = { "<cmd>lua require'dapui'.toggle()<cr>", "UI" },
 	x = { "<cmd>lua require'dap'.terminate()<cr>", "Exit" },
 }
-lvim.builtin.which_key.mappings["f"] = {
+lvim.builtin.which_key.mappings["s"] = {
 	name = "Find",
 	b = { "<cmd>Telescope git_branches<cr>", "Checkout branch" },
 	c = { "<cmd>Telescope colorscheme<cr>", "Colorscheme" },
 	f = { "<cmd>Telescope find_files<cr>", "Find files" },
 	t = { "<cmd>Telescope live_grep<cr>", "Find Text" },
 	s = { "<cmd>Telescope grep_string<cr>", "Find String" },
+	S = { "<cmd>:lua require('session-lens').search_session()<cr>", "Search Session" },
 	h = { "<cmd>Telescope help_tags<cr>", "Help" },
 	H = { "<cmd>Telescope highlights<cr>", "Highlights" },
-	i = { "<cmd>lua require('telescope').extensions.media_files.media_files()<cr>", "Media" },
 	l = { "<cmd>Telescope resume<cr>", "Last Search" },
 	M = { "<cmd>Telescope man_pages<cr>", "Man Pages" },
 	r = { "<cmd>Telescope oldfiles<cr>", "Recent File" },
@@ -46,7 +49,8 @@ lvim.builtin.which_key.mappings["g"] = {
 	g = { "<cmd>Neogit<cr>", "Neogit" },
 	j = { "<cmd>lua require 'gitsigns'.next_hunk()<cr>", "Next Hunk" },
 	k = { "<cmd>lua require 'gitsigns'.prev_hunk()<cr>", "Prev Hunk" },
-	l = { "<cmd>GitBlameToggle<cr>", "Blame" },
+	L = { "<cmd>GitBlameToggle<cr>", "Blame Toggle" },
+	l = { "<cmd>lua require 'gitsigns'.blame_line()<cr>", "Blame Line" },
 	p = { "<cmd>lua require 'gitsigns'.preview_hunk()<cr>", "Preview Hunk" },
 	r = { "<cmd>lua require 'gitsigns'.reset_hunk()<cr>", "Reset Hunk" },
 	R = { "<cmd>lua require 'gitsigns'.reset_buffer()<cr>", "Reset Buffer" },
@@ -64,54 +68,49 @@ lvim.builtin.which_key.mappings["g"] = {
 		"<cmd>Gitsigns diffthis HEAD<cr>",
 		"Diff",
 	},
-	G = {
-		name = "Gist",
-		a = { "<cmd>Gist -b -a<cr>", "Create Anon" },
-		d = { "<cmd>Gist -d<cr>", "Delete" },
-		f = { "<cmd>Gist -f<cr>", "Fork" },
-		g = { "<cmd>Gist -b<cr>", "Create" },
-		l = { "<cmd>Gist -l<cr>", "List" },
-		p = { "<cmd>Gist -b -p<cr>", "Create Private" },
+	n = { "<cmd>Neogit<cr>", "Neogit" },
+	y = {
+		"<cmd>lua require'gitlinker'.get_buf_range_url('n', {action_callback = require'gitlinker.actions'.copy_to_clipboard, })<cr>",
+		"Gitlinker",
+		silent = true,
+	},
+	e = {
+		name = "open edited",
+		m = { "<cmd>lua require('igs').edit_modified()<cr>", "modified" },
+		-- 	s = { "<cmd>lua require('igs').edit_staged()<cr>", "staged" },
+		a = { "<cmd>lua require('igs').edit_all()<cr>", "all" },
+	},
+	q = {
+		name = "send to qf",
+		m = { "<cmd>lua require('igs').qf_modified()<cr>", "modified" },
+		s = { "<cmd>lua require('igs').qf_staged()<cr>", "staged" },
+		a = { "<cmd>lua require('igs').qf_all()<cr>", "all" },
+	},
+	h = {
+		name = "Hub",
+		p = { "<cmd>Octo pr list<cr>", "List PRs" },
+		i = { "<cmd>Octo issue list<cr>", "List Issues" },
+		s = { "<cmd>Octo review start<cr>", "Start Review" },
+		r = { "<cmd>Octo review resume<cr>", "Resume Review" },
 	},
 }
-lvim.builtin.which_key.mappings["l"] = {
-	name = "LSP",
-	a = { "<cmd>lua vim.lsp.buf.code_action()<cr>", "Code Action" },
-	c = { "<cmd>lua require('copilot.suggestion').toggle_auto_trigger()<cr>", "Get Capabilities" },
-	-- c = { "<cmd>lua require('user.lsp').server_capabilities()<cr>", "Get Capabilities" },
-	d = { "<cmd>TroubleToggle<cr>", "Diagnostics" },
-	w = {
-		"<cmd>Telescope lsp_workspace_diagnostics<cr>",
-		"Workspace Diagnostics",
+
+lvim.builtin.which_key.mappings["lc"] = { "<cmd>lua require('copilot.suggestion').toggle_auto_trigger()<cr>",
+	"Get Capabilities" }
+lvim.builtin.which_key.mappings["t"] = {
+	name = "Tab",
+	t = {
+		"<cmd>lua require('telescope').extensions['telescope-tabs'].list_tabs(require('telescope.themes').get_dropdown{previewer = false, initial_mode='normal', prompt_title='Tabs'})<cr>",
+		"Find Tab",
 	},
-	f = { "<cmd>lua vim.lsp.buf.format({ async = true })<cr>", "Format" },
-	F = { "<cmd>LspToggleAutoFormat<cr>", "Toggle Autoformat" },
-	i = { "<cmd>LspInfo<cr>", "Info" },
-	h = { "<cmd>lua require('lsp-inlayhints').toggle()<cr>", "Toggle Hints" },
-	H = { "<cmd>IlluminationToggle<cr>", "Toggle Doc HL" },
-	I = { "<cmd>LspInstallInfo<cr>", "Installer Info" },
-	j = {
-		"<cmd>lua vim.diagnostic.goto_next({buffer=0})<CR>",
-		"Next Diagnostic",
-	},
-	k = {
-		"<cmd>lua vim.diagnostic.goto_prev({buffer=0})<cr>",
-		"Prev Diagnostic",
-	},
-	v = { "<cmd>lua require('lsp_lines').toggle()<cr>", "Virtual Text" },
-	l = { "<cmd>lua vim.lsp.codelens.run()<cr>", "CodeLens Action" },
-	o = { "<cmd>SymbolsOutline<cr>", "Outline" },
-	q = { "<cmd>lua vim.lsp.diagnostic.set_loclist()<cr>", "Quickfix" },
-	r = { "<cmd>lua vim.lsp.buf.rename()<cr>", "Rename" },
-	R = { "<cmd>TroubleToggle lsp_references<cr>", "References" },
-	s = { "<cmd>Telescope lsp_document_symbols<cr>", "Document Symbols" },
-	S = {
-		"<cmd>Telescope lsp_dynamic_workspace_symbols<cr>",
-		"Workspace Symbols",
-	},
-	t = { '<cmd>lua require("user.functions").toggle_diagnostics()<cr>', "Toggle Diagnostics" },
-	u = { "<cmd>LuaSnipUnlinkCurrent<cr>", "Unlink Snippet" },
+	n = { "<cmd>tabnew %<cr>", "New Tab" },
+	c = { "<cmd>tabclose<cr>", "Close Tab" },
+	o = { "<cmd>tabonly<cr>", "Only Tab" },
 }
+
+
+lvim.builtin.which_key.mappings["lc"] = { "<cmd>lua require('copilot.suggestion').toggle_auto_trigger()<cr>",
+	"Get Capabilities" }
 lvim.builtin.which_key.mappings["t"] = {
 	name = "Tab",
 	t = {
@@ -124,10 +123,9 @@ lvim.builtin.which_key.mappings["t"] = {
 }
 
 lvim.builtin.which_key.mappings[";"] = nil
-lvim.builtin.which_key.mappings["c"] = nil
-lvim.builtin.which_key.mappings["L"] = nil
-lvim.builtin.which_key.mappings["s"] = nil
-lvim.builtin.which_key.mappings["w"] = nil
+lvim.builtin.which_key.mappings["c"] = { "<cmd>Bdelete!<CR>", "Close Buffer" }
+lvim.builtin.which_key.mappings["f"] = { require("lvim.core.telescope.custom-finders").find_project_files, "Find File" }
+lvim.builtin.which_key.mappings["w"] = { "<cmd>w!<CR>", "Save" }
 
 local m_opts = {
 	mode = "n", -- NORMAL mode
