@@ -45,8 +45,7 @@ lvim.builtin.which_key.mappings["s"] = {
 }
 lvim.builtin.which_key.mappings["g"] = {
 	name = "Git",
-	-- g = { "<cmd>lua require 'lvim.core.terminal'.lazygit_toggle(12000)<cr>", "Lazygit" },
-	g = { "<cmd>Neogit<cr>", "Neogit" },
+	g = { "<cmd>lua require 'lvim.core.terminal'.lazygit_toggle(12000)<cr>", "Lazygit" },
 	j = { "<cmd>lua require 'gitsigns'.next_hunk()<cr>", "Next Hunk" },
 	k = { "<cmd>lua require 'gitsigns'.prev_hunk()<cr>", "Prev Hunk" },
 	L = { "<cmd>GitBlameToggle<cr>", "Blame Toggle" },
@@ -95,33 +94,8 @@ lvim.builtin.which_key.mappings["g"] = {
 	},
 }
 
-lvim.builtin.which_key.mappings["lc"] = { "<cmd>lua require('copilot.suggestion').toggle_auto_trigger()<cr>",
-	"Get Capabilities" }
-lvim.builtin.which_key.mappings["t"] = {
-	name = "Tab",
-	t = {
-		"<cmd>lua require('telescope').extensions['telescope-tabs'].list_tabs(require('telescope.themes').get_dropdown{previewer = false, initial_mode='normal', prompt_title='Tabs'})<cr>",
-		"Find Tab",
-	},
-	n = { "<cmd>tabnew %<cr>", "New Tab" },
-	c = { "<cmd>tabclose<cr>", "Close Tab" },
-	o = { "<cmd>tabonly<cr>", "Only Tab" },
-}
-
-
-lvim.builtin.which_key.mappings["lc"] = { "<cmd>lua require('copilot.suggestion').toggle_auto_trigger()<cr>",
-	"Get Capabilities" }
-lvim.builtin.which_key.mappings["t"] = {
-	name = "Tab",
-	t = {
-		"<cmd>lua require('telescope').extensions['telescope-tabs'].list_tabs(require('telescope.themes').get_dropdown{previewer = false, initial_mode='normal', prompt_title='Tabs'})<cr>",
-		"Find Tab",
-	},
-	n = { "<cmd>tabnew %<cr>", "New Tab" },
-	c = { "<cmd>tabclose<cr>", "Close Tab" },
-	o = { "<cmd>tabonly<cr>", "Only Tab" },
-}
-
+lvim.builtin.which_key.mappings["lc"] =
+	{ "<cmd>lua require('copilot.suggestion').toggle_auto_trigger()<cr>", "Get Capabilities" }
 lvim.builtin.which_key.mappings[";"] = nil
 lvim.builtin.which_key.mappings["c"] = { "<cmd>Bdelete!<CR>", "Close Buffer" }
 lvim.builtin.which_key.mappings["f"] = { require("lvim.core.telescope.custom-finders").find_project_files, "Find File" }

@@ -8,7 +8,7 @@ end
 
 -- get length of current word
 function M.get_word_length()
-  local word = vim.fn.expand "<cword>"
+  local word = vim.fn.expand "<cword>" 
   return #word
 end
 

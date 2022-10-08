@@ -1,3 +1,4 @@
+require("user.plugins")
 require("user.options")
 require("user.keymaps")
 require("user.autocommands")
@@ -25,3 +26,6 @@ require("user.treesitter")
 require("user.neogit")
 require("user.terminal")
 require("user.go-ide")
+require("user.session")
+
+require("leap").add_default_mappings()

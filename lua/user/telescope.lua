@@ -72,6 +72,9 @@ lvim.builtin.telescope.pickers.find_files = {
   hidden = true,
 }
 
+lvim.builtin.telescope.pickers.git_files = {
+}
+
 lvim.builtin.telescope.defaults.color_devicons = true
 lvim.builtin.telescope.defaults.use_less = true
 lvim.builtin.telescope.defaults.set_env = { ["COLORTERM"] = "truecolor" }
@@ -81,7 +84,6 @@ local _, actions = pcall(require, "telescope.actions")
 lvim.builtin.telescope.defaults.mappings = {
   -- for input mode
   i = {
-
     ["<C-n>"] = actions.move_selection_next,
     ["<C-p>"] = actions.move_selection_previous,
 
@@ -152,10 +154,10 @@ lvim.builtin.telescope.defaults.mappings = {
 	},
 }
 
-require("telescope-tabs").setup({
-	show_preview = false,
-	close_tab_shortcut = "C-d",
-	initial_mode = "normal",
-	theme = "dropdown",
-	-- Your custom config :^)
-})
+-- require("telescope-tabs").setup({
+-- 	show_preview = false,
+-- 	close_tab_shortcut = "C-d",
+-- 	initial_mode = "normal",
+-- 	theme = "dropdown",
+-- 	-- Your custom config :^)
+-- })
