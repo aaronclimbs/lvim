@@ -2,10 +2,10 @@
 local packer = require("packer")
 
 packer.init({
-	max_jobs = 30,
-	git = {
-		clone_timeout = 300, -- 5 mins
-	},
+  max_jobs = 30,
+  git = {
+    clone_timeout = 300, -- 5 mins
+  },
 })
 
 lvim.plugins = {

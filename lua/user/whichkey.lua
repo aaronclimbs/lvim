@@ -58,7 +58,7 @@ lvim.builtin.which_key.mappings["g"] = {
 		"<cmd>lua require 'gitsigns'.undo_stage_hunk()<cr>",
 		"Undo Stage Hunk",
 	},
-	n = { ":!git checkout -b ", "Checkout New Branch" },
+	B = { ":!git checkout -b ", "Checkout New Branch" },
 	o = { "<cmd>Telescope git_status<cr>", "Open changed file" },
 	b = { "<cmd>Telescope git_branches<cr>", "Checkout branch" },
 	c = { "<cmd>Telescope git_commits<cr>", "Checkout commit" },
