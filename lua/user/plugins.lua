@@ -66,6 +66,7 @@ lvim.plugins = {
 		event = "BufRead",
 	},
 	"tpope/vim-unimpaired",
+  "tpope/vim-repeat",
 	"jose-elias-alvarez/typescript.nvim",
 	{
 		"rmagatti/session-lens",
