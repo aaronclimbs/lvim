@@ -1,33 +1,28 @@
-require("user.plugins")
-require("user.options")
-require("user.keymaps")
-require("user.autocommands")
-require("user.lsp")
-require("user.neoscroll")
-require("user.fidget")
-require("user.harpoon")
-require("user.cybu")
-require("user.surround")
-require("user.bookmark")
-require("user.todo-comments")
-require("user.jaq")
-require("user.lab")
-require("user.git")
-require("user.zen-mode")
-require("user.whichkey")
-require("user.telescope")
-require("user.outline")
-require("user.numb")
-require("user.surround")
-require("user.terminal")
-require("user.bqf")
-require("user.dial")
-require("user.numb")
-require("user.treesitter")
-require("user.neogit")
-require("user.terminal")
-require("user.go-ide")
-require("user.session")
-
-require("leap").add_default_mappings()
-require("user.colorizer")
+reload "user.plugins"
+reload "user.options"
+reload "user.autocommands"
+reload "user.bookmark"
+reload "user.bqf"
+reload "user.colorizer"
+reload "user.cybu"
+reload "user.dial"
+reload "user.fidget"
+reload "user.git"
+reload "user.harpoon"
+reload "user.icons"
+reload "user.inlay-hints"
+reload "user.jaq"
+reload "user.keymaps"
+reload "user.lab"
+reload "user.lsp"
+reload "user.lualine"
+reload "user.neogit"
+reload "user.neoscroll"
+reload "user.numb"
+reload "user.options"
+reload "user.surround"
+reload "user.telescope"
+reload "user.todo-comments"
+reload "user.treesitter"
+reload "user.whichkey"
+reload "user.zen-mode"
