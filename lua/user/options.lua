@@ -14,10 +14,6 @@ lvim.builtin.cmp.completion = { completion = { completeopt = "menu,menuone, noin
 vim.opt.showtabline = 0
 lvim.colorscheme = "tokyonight"
 lvim.builtin.nvimtree.setup.view.width = 50
-lvim.builtin.notify.opts = {
-	stages = "fade_in_slide_out",
-	timeout = 2000,
-}
 
 local options = {
 	backup = false, -- creates a backup file
