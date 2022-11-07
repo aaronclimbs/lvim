@@ -1,4 +1,4 @@
-lvim.colorscheme = "darkplus"
+lvim.colorscheme = "tokyonight-night"
 lvim.log.level = "warn"
 lvim.builtin.alpha.active = true
 lvim.builtin.illuminate.active = false
@@ -12,10 +12,11 @@ lvim.builtin.treesitter.highlight.enabled = true
 lvim.builtin.terminal.active = true
 lvim.builtin.dap.active = true
 lvim.builtin.cmp.window.documentation = false
+lvim.builtin.terminal.open_mapping = [[<c-t>]]
 lvim.builtin.cmp.window.completion = {
   border = "rounded",
   winhighlight = "NormalFloat:Pmenu,NormalFloat:Pmenu,CursorLine:PmenuSel,Search:None",
-  completion = { completeopt = "menu,menuone, noinsert" }
+  completion = { completeopt = "menu,menuone, noinsert" },
 }
 
 lvim.builtin.cmp.formatting.source_names = {
@@ -77,7 +78,6 @@ local options = {
   title = true,
   -- colorcolumn = "80",
   -- colorcolumn = "120",
-
 }
 -- vim.g.loaded_netrw = 1
 -- vim.g.loaded_netrwPlugin = 1
@@ -85,31 +85,50 @@ local options = {
 -- vim.opt.fillchars = vim.opt.fillchars + "vertleft: "
 -- vim.opt.fillchars = vim.opt.fillchars + "vertright: "
 vim.opt.fillchars = vim.opt.fillchars + "eob: "
-vim.opt.fillchars:append({
-	stl = " ",
-})
+vim.opt.fillchars:append {
+  stl = " ",
+}
 
 vim.g.surround_load_keymaps = true
 vim.g.surround_mappings_style = "surround"
 
 vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal"
 
-vim.opt.spelloptions:append("camel")
+vim.opt.spelloptions:append "camel"
 
-vim.opt.shortmess:append("c")
+vim.opt.shortmess:append "c"
 
 for k, v in pairs(options) do
   vim.opt[k] = v
 end
 
-vim.cmd("set whichwrap+=<,>,[,],h,l")
-vim.cmd([[set iskeyword+=-]])
-vim.cmd([[set formatoptions-=cro]]) -- TODO: this doesn't seem to work
+vim.cmd "set whichwrap+=<,>,[,],h,l"
+vim.cmd [[set iskeyword+=-]]
+vim.cmd [[set formatoptions-=cro]] -- TODO: this doesn't seem to work
 
-vim.filetype.add({
+vim.filetype.add {
   extension = {
     conf = "dosini",
   },
-})
+}
 
 lvim.builtin.project.patterns = { ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile", "pom.xml" }
+
+vim.cmd [[
+" Change cursor shape on different mode
+if empty($TMUX)
+  " Vertical bar in insert mode
+  let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+  " Block in normal mode
+  let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+  " Underline in replace mode
+  let &t_SR = "\<Esc>]50;CursorShape=2\x7"
+else
+  " Vertical bar in insert mode
+  let &t_SI = "\e[5 q"
+  " Block in normal mode
+  let &t_SR = "\e[4 q"
+  " Underline in replace mode
+  let &t_EI = "\e[1 q"
+endif
+]]

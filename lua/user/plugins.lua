@@ -1,20 +1,21 @@
 -- Additional Plugins
-local packer = require("packer")
+local packer = require "packer"
 
-packer.init({
+packer.init {
   max_jobs = 30,
   git = {
     clone_timeout = 300, -- 5 mins
   },
-})
+}
 
 lvim.plugins = {
   "ellisonleao/gruvbox.nvim",
   "nvim-treesitter/playground",
   "nvim-treesitter/nvim-treesitter-textobjects",
-  "p00f/nvim-ts-rainbow"
+  "p00f/nvim-ts-rainbow",
   "mfussenegger/nvim-jdtls",
   "karb94/neoscroll.nvim",
+  "christoomey/vim-tmux-navigator",
   "j-hui/fidget.nvim",
   "windwp/nvim-ts-autotag",
   "kylechui/nvim-surround",
@@ -27,6 +28,7 @@ lvim.plugins = {
   "windwp/nvim-spectre",
   "f-person/git-blame.nvim",
   "ruifm/gitlinker.nvim",
+  "jeffkreeftmeijer/vim-numbertoggle",
   "mattn/vim-gist",
   "mattn/webapi-vim",
   "folke/zen-mode.nvim",
@@ -81,6 +83,15 @@ lvim.plugins = {
       vim.defer_fn(function()
         require("copilot").setup {
           plugin_manager_path = os.getenv "LUNARVIM_RUNTIME_DIR" .. "/site/pack/packer",
+          suggestion = {
+            enabled = true,
+            auto_trigger = false,
+            debounce = 75,
+            keymap = {
+              accept = "<C-tab>",
+              dismiss = "<C-]>",
+            },
+          },
         }
       end, 100)
     end,
@@ -97,23 +108,86 @@ lvim.plugins = {
     end,
   },
 
+  "tpope/vim-unimpaired",
+  "tpope/vim-repeat",
+
+  {
+    "rmagatti/session-lens",
+    requires = { "rmagatti/auto-session", "nvim-telescope/telescope.nvim" },
+    config = function()
+      require("session-lens").setup {
+        theme_conf = { border = false },
+        previewer = true,
+      }
+    end,
+  },
+  { "simrat39/symbols-outline.nvim" },
+
   -- https://github.com/jose-elias-alvarez/typescript.nvim
-  -- "rmagatti/auto-session",
-  -- "rmagatti/session-lens"
-}
+
+  {
+    "rmagatti/igs.nvim",
+    config = function()
+      require("igs").setup {}
+    end,
+  },
 
   -- "MunifTanjim/nui.nvim",
+  -- "rcarriga/nvim-notify",
   -- {
   --   "folke/noice.nvim",
   --   event = "VimEnter",
   --   config = function()
-  --     require("noice").setup()
+  --     require("noice").setup({})
   --   end,
   -- },
+  {
+    "cbochs/portal.nvim",
+    config = function()
+      require("portal").setup {
+        -- Your configuration goes here
+        -- Leave empty to use the default configuration
+        -- Please see the Configuration section below for more information
+        integrations = {
+          grapple = true,
+          harpoon = true,
+        },
+      }
+    end,
+    requires = {
+      "cbochs/grapple.nvim", -- Optional: provides the "grapple" query item
+    },
+  },
+  {
+    "pwntester/octo.nvim",
+    requires = {
+      "nvim-lua/plenary.nvim",
+      "nvim-telescope/telescope.nvim",
+      "kyazdani42/nvim-web-devicons",
+    },
+    config = function()
+      require("octo").setup()
+    end,
+  },
+  "rhysd/conflict-marker.vim",
+  "ibhagwan/smartyank.nvim",
+  {
+    "epwalsh/obsidian.nvim",
+    config = function()
+      require("obsidian").setup {
+        dir = "~/Documents/devbook",
+        notes_subdir = "notes",
+        daily_notes = {
+          folder = "daily",
+        },
+      }
+    end,
+  },
+}
 
 require("leap").add_default_mappings()
-require("smartyank").setup({
-	highlight = {
-		timeout = 400, -- timeout for clearing the highlight
-	},
-})
+require("smartyank").setup {
+  highlight = {
+    timeout = 400, -- timeout for clearing the highlight
+  },
+}

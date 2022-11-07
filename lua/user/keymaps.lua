@@ -11,11 +11,10 @@ keymap("n", "<C-i>", "<C-i>", opts)
 
 -- Normal --
 -- Better window navigation
-keymap("n", "<m-h>", "<C-w>h", opts)
-keymap("n", "<m-j>", "<C-w>j", opts)
-keymap("n", "<m-k>", "<C-w>k", opts)
-keymap("n", "<m-l>", "<C-w>l", opts)
-keymap("n", "<m-tab>", "<c-6>", opts)
+keymap("n", "<c-h>", "<C-w>h", opts)
+keymap("n", "<c-j>", "<C-w>j", opts)
+keymap("n", "<c-k>", "<C-w>k", opts)
+keymap("n", "<c-l>", "<C-w>l", opts)
 
 function _G.set_terminal_keymaps()
   vim.api.nvim_buf_set_keymap(0, "t", "<c-h>", [[<C-\><C-n><C-W>h]], opts)
@@ -33,10 +32,10 @@ vim.cmd "autocmd! TermOpen term://* lua set_terminal_keymaps()"
 -- keymap("n", "<s-\\>", ":tabonly<cr>", opts)
 
 -- Resize with arrows
-keymap("n", "<C-Up>", ":resize -2<CR>", opts)
-keymap("n", "<C-Down>", ":resize +2<CR>", opts)
-keymap("n", "<C-Left>", ":vertical resize -2<CR>", opts)
-keymap("n", "<C-Right>", ":vertical resize +2<CR>", opts)
+keymap("n", "<A-Up>", ":resize -2<CR>", opts)
+keymap("n", "<A-Down>", ":resize +2<CR>", opts)
+keymap("n", "<A-Left>", ":vertical resize -2<CR>", opts)
+keymap("n", "<A-Right>", ":vertical resize +2<CR>", opts)
 
 keymap("n", "n", "nzz", opts)
 keymap("n", "N", "Nzz", opts)
@@ -92,8 +91,6 @@ vim.cmd([[
 -- Repurpose arrow keys for quickfix list movement
 keymap("n", "<up>", ":cprevious<cr>", opts)
 keymap("n", "<down>", ":cnext<cr>", opts)
-
-keymap("n", "<m-q>", ":call QuickFixToggle()<cr>", opts)
 
 -- Lucky Spelling
 keymap("n", "zl", "1z=", opts)
@@ -166,5 +163,19 @@ keymap("n", "<leader>Xp", ":Lab code panel<cr>", opts)
 -- Cybu
 keymap("n", "H", "<Plug>(CybuPrev)", opts)
 keymap("n", "L", "<Plug>(CybuNext)", opts)
+
+-- Obsidian
+keymap(
+  "n",
+  "gf",
+  function()
+    if require('obsidian').util.cursor_on_markdown_link() then
+      return "<cmd>ObsidianFollowLink<CR>"
+    else
+      return "gf"
+    end
+  end,
+  { noremap = false, expr = true}
+)
 
 return M
