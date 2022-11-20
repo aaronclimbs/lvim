@@ -27,5 +27,6 @@ reload "user.inlay-hints"
 reload "user.lualine"
 reload "user.neogit"
 reload "user.session"
+reload "user.scrollbar"
 
 require("leap").add_default_mappings()

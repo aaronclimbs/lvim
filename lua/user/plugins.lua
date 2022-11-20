@@ -48,6 +48,7 @@ lvim.plugins = {
   "mfussenegger/nvim-dap-python",
   "jose-elias-alvarez/typescript.nvim",
   "mxsdev/nvim-dap-vscode-js",
+  "petertriho/nvim-scrollbar",
   {
     "saecki/crates.nvim",
     tag = "v0.3.0",
@@ -107,6 +108,29 @@ lvim.plugins = {
       }
     end,
   },
+  -- "MunifTanjim/nui.nvim",
+  -- {
+  --   "folke/noice.nvim",
+  --   event = "VimEnter",
+  --   config = function()
+  --     require("noice").setup()
+  --   end,
+  -- },
+
+  "tpope/vim-unimpaired",
+  "tpope/vim-repeat",
+
+  {
+    "rmagatti/session-lens",
+    requires = { "rmagatti/auto-session", "nvim-telescope/telescope.nvim" },
+    config = function()
+      require("session-lens").setup {
+        theme_conf = { border = false },
+        previewer = true,
+      }
+    end,
+  },
+  { "simrat39/symbols-outline.nvim" },
 
   "tpope/vim-unimpaired",
   "tpope/vim-repeat",
