@@ -132,21 +132,6 @@ lvim.plugins = {
   },
   { "simrat39/symbols-outline.nvim" },
 
-  "tpope/vim-unimpaired",
-  "tpope/vim-repeat",
-
-  {
-    "rmagatti/session-lens",
-    requires = { "rmagatti/auto-session", "nvim-telescope/telescope.nvim" },
-    config = function()
-      require("session-lens").setup {
-        theme_conf = { border = false },
-        previewer = true,
-      }
-    end,
-  },
-  { "simrat39/symbols-outline.nvim" },
-
   -- https://github.com/jose-elias-alvarez/typescript.nvim
 
   {

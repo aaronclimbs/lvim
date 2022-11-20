@@ -117,7 +117,7 @@ lvim.builtin.which_key.mappings["o"] = {
   ["<cr>"] = { "<cmd>ObsidianFollowLink<cr>", "Follow Link" },
 }
 
-lvim.builtin.which_key.vmappings["o"] = { 
+lvim.builtin.which_key.vmappings["o"] = {
   l = { "<cmd>ObsidianLink<cr>", "Link" },
   L = { "<cmd>ObsidianLinkNew<cr>", "Link to new note" },
 }
@@ -127,11 +127,11 @@ lvim.builtin.which_key.mappings["C"] = {
   name = "Options",
   c = { "<cmd>lua lvim.builtin.cmp.active = false<cr>", "Completion off" },
   C = { "<cmd>lua lvim.builtin.cmp.active = true<cr>", "Completion on" },
-  -- w = { '<cmd>lua require("user.functions").toggle_option("wrap")<cr>', "Wrap" },
-  -- r = { '<cmd>lua require("user.functions").toggle_option("relativenumber")<cr>', "Relative" },
-  -- l = { '<cmd>lua require("user.functions").toggle_option("cursorline")<cr>', "Cursorline" },
-  -- s = { '<cmd>lua require("user.functions").toggle_option("spell")<cr>', "Spell" },
-  -- t = { '<cmd>lua require("user.functions").toggle_tabline()<cr>', "Tabline" },
+  w = { '<cmd>lua require("user.functions").toggle_option("wrap")<cr>', "Wrap" },
+  r = { '<cmd>lua require("user.functions").toggle_option("relativenumber")<cr>', "Relative" },
+  l = { '<cmd>lua require("user.functions").toggle_option("cursorline")<cr>', "Cursorline" },
+  s = { '<cmd>lua require("user.functions").toggle_option("spell")<cr>', "Spell" },
+  t = { '<cmd>lua require("user.functions").toggle_tabline()<cr>', "Tabline" },
 }
 
 lvim.builtin.which_key.mappings["l"] = {
@@ -149,7 +149,7 @@ lvim.builtin.which_key.mappings["l"] = {
   i = { "<cmd>LspInfo<cr>", "Info" },
   h = { "<cmd>lua require('lsp-inlayhints').toggle()<cr>", "Toggle Hints" },
   H = { "<cmd>IlluminationToggle<cr>", "Toggle Doc HL" },
-  I = { "<cmd>LspInstallInfo<cr>", "Installer Info" },
+  I = { "<cmd>Mason<cr>", "Installer Info" },
   j = {
     "<cmd>lua vim.diagnostic.goto_next({buffer=0})<CR>",
     "Next Diagnostic",
