@@ -181,8 +181,7 @@ keymap("n", "H", "<Plug>(CybuPrev)", opts)
 keymap("n", "L", "<Plug>(CybuNext)", opts)
 
 -- Obsidian
-keymap(
-  "n",
+keymap( "n",
   "gf",
   function()
     if require('obsidian').util.cursor_on_markdown_link() then

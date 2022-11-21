@@ -12,6 +12,7 @@ lvim.builtin.treesitter.ensure_installed = {
 }
 
 -- vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "jdtls" })
+lvim.lsp.automatic_servers_installation = true
 
 local formatters = require "lvim.lsp.null-ls.formatters"
 formatters.setup {
