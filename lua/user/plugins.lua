@@ -184,7 +184,7 @@ lvim.plugins = {
     "epwalsh/obsidian.nvim",
     config = function()
       require("obsidian").setup {
-        dir = "~/Documents/vault",
+        dir = os.getenv("OBSIDIAN_VAULT_DIR"),
         notes_subdir = "notes",
         daily_notes = {
           folder = "daily",

@@ -11,6 +11,8 @@ lvim.builtin.treesitter.ensure_installed = {
   "java",
 }
 
+require("lvim.lsp.manager").setup("marksman")
+
 -- vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "jdtls" })
 lvim.lsp.automatic_servers_installation = true
 
